@@ -1,0 +1,127 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.df.thorntail</groupId>
+	<artifactId>df-thorntail</artifactId>
+	<version>0.0.1</version>
+	<packaging>war</packaging>
+	
+	<properties>
+		<version.thorntail>2.4.0.Final</version.thorntail>
+		<maven.compiler.target>1.8</maven.compiler.target>
+    	<maven.compiler.source>1.8</maven.compiler.source>
+
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>	
+	</properties>
+	
+	<licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <distribution>repo</distribution>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+        </license>
+    </licenses>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.thorntail</groupId>
+				<artifactId>bom</artifactId>
+				<version>${version.thorntail}</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+			<version>1.2</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+		    <groupId>javax.ws.rs</groupId>
+		    <artifactId>javax.ws.rs-api</artifactId>
+		    <version>2.1.1</version>
+		    <scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>jsf</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>cdi</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-api</artifactId>
+		    <version>1.7.25</version>
+		</dependency>
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>com.drewnoakes</groupId>
+			<artifactId>metadata-extractor</artifactId>
+			<version>2.11.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.imgscalr</groupId>
+		    <artifactId>imgscalr-lib</artifactId>
+		    <version>4.2</version>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.2.3</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+						<!-- 
+						<manifestEntries>
+							<Dependencies>org.slf4j</Dependencies>
+						</manifestEntries>
+						 -->
+					</archive>
+				</configuration>
+			</plugin>
+			<!-- 
+			<plugin>
+				<groupId>io.thorntail</groupId>
+				<artifactId>thorntail-maven-plugin</artifactId>
+				<version>${version.thorntail}</version>
+				<configuration>
+					<fractions>
+						<fraction>jsf</fraction>
+					</fractions>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>package</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			-->
+		</plugins>
+	</build>
+ 	
+	
+</project>

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+<f:event listener="#{imageDirectoryBean.initConversation}" type="preRenderView"></f:event>
+  
+<body>
+
+<ui:composition template="/template.xhtml">
+
+    <ui:define name="content">
+        <div id="mainPanel">
+        	<table style="width: 100%;">
+        		<tr>
+        			<td style="width: 250px;">
+        				<div id="menu" class="menu">
+        					Menu
+        				</div>
+        			</td>
+        			<td>
+        				<div id="gallery" style="width: 100%">
+        					<ui:repeat value="#{imageDirectoryBean.imagesInPage(0)}" var="image">
+					        	<div class="imgPanel">
+					        		<h:graphicImage value="image/#{image.id}" style="width: 255px;"/>
+					        	</div>
+					        </ui:repeat>
+        				</div>
+        			</td>
+        		</tr>
+        	</table>
+        </div>
+    </ui:define>
+
+</ui:composition>
+
+</body>
+</html>

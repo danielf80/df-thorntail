@@ -1,0 +1,46 @@
+body {
+	font-family: Roboto,Calibri,Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #d8d9da;
+    background-color: #171819;
+}
+
+a, a:visited, a:hover, a:active {
+	color: inherit;
+}
+
+.special-link, .special-link:visited, .special-link:hover, .special-link:active {
+	color: inherit;
+}
+
+.item_label {
+	font-weight: bold;
+	font-stretch: wider;
+	color: orange;	
+}
+
+.item_data {
+	font-style: italic;
+}
+
+div.menu {
+	margin: 20px;
+}
+
+div.content {
+	margin: 10px;
+}
+div.imgPanel {
+	float: left;
+	border-radius: 10px;
+	margin: 0px 5px 5px 0px;
+	border: 1px solid #A8A2DD;
+	padding: 4px;
+	width: 260px;
+	height: 260px;
+}
+
+div.imgPanel [img] {
+	width: 255px;
+}
