@@ -2,6 +2,7 @@ package com.df.thorntail.entity;
 
 import javax.enterprise.inject.Model;
 
+@Deprecated
 @Model
 public class ImgInfo {
 	

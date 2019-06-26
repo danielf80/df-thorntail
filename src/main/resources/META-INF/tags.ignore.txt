@@ -1,0 +1,113 @@
+<<<<<<< HEAD
+### FILE
+File Type.Detected File Type Long Name
+File Type.Detected MIME Type
+File Type.Expected File Name Extension
+### PNG
+PNG-IHDR.Bits Per Sample
+PNG-IHDR.Color Type
+PNG-IHDR.Compression Type
+PNG-IHDR.Filter Method
+PNG-IHDR.Interlace Method
+PNG-sRGB.sRGB Rendering Intent
+PNG-gAMA.Image Gamma
+PNG-pHYs.Pixels Per Unit X
+PNG-pHYs.Pixels Per Unit Y
+PNG-pHYs.Unit Specifier
+PNG-bKGD.Background Color
+PNG-iCCP.ICC Profile Name
+PNG Chromaticities.*
+### GIF
+GIF Header.GIF Format Version
+GIF Header.Color Table Size
+GIF Header.Is Color Table Sorted
+GIF Header.Bits per Pixel
+GIF Header.Has Global Color Table
+GIF Header.Background Color Index
+GIF Control.Disposal Method
+GIF Control.User Input Flag
+GIF Control.Transparent Color Flag
+GIF Control.Transparent Color Index
+GIF Control.Delay
+GIF Image.Left
+GIF Image.Top
+GIF Image.Width
+GIF Image.Height
+GIF Image.Has Local Colour Table
+GIF Image.Is Interlaced
+### JPEG
+JPEG.Compression Type
+JPEG.Data Precision
+JPEG.Number of Components
+JPEG.Component 1
+JPEG.Component 2
+JPEG.Component 3
+JPEG.Version
+JPEG.Resolution Units
+JPEG.X Resolution
+JPEG.Y Resolution
+JPEG.Thumbnail Width Pixels
+JPEG.Thumbnail Height Pixels
+### EXIF
+Exif IFD0.X Resolution
+Exif IFD0.Y Resolution
+Exif IFD0.Resolution Unit
+Exif IFD0.YCbCr Positioning
+Exif IFD0.Orientation
+Exif SubIFD.Exposure Time
+Exif SubIFD.F-Number
+Exif SubIFD.Exposure Program
+Exif SubIFD.Exif Version
+Exif SubIFD.Components Configuration
+Exif SubIFD.Shutter Speed Value
+Exif SubIFD.Aperture Value
+Exif SubIFD.Brightness Value
+Exif SubIFD.Exposure Bias Value
+Exif SubIFD.Metering Mode
+Exif SubIFD.Focal Length
+Exif SubIFD.Subject Location
+Exif SubIFD.Sub-Sec Time Original
+Exif SubIFD.FlashPix Version
+Exif SubIFD.Color Space
+Exif SubIFD.Sensing Method
+Exif SubIFD.Scene Type
+Exif SubIFD.Exposure Mode
+Exif SubIFD.White Balance Mode
+Exif SubIFD.Focal Length 35
+Exif SubIFD.Unique Image ID
+Exif SubIFD.Lens Specification
+Exif SubIFD.ISO Speed Ratings
+Exif SubIFD.Sub-Sec Time Digitized
+Exif SubIFD.Exif Image Width
+Exif SubIFD.Exif Image Height
+Exif SubIFD.Date/Time Digitized
+Exif Thumbnail.*
+### GPS
+GPS.GPS Latitude Ref
+GPS.GPS Longitude Ref
+GPS.GPS Altitude Ref
+GPS.GPS Altitude
+GPS.GPS Time-Stamp
+GPS.GPS Date Stamp
+GPS.GPS Speed Ref
+GPS.GPS Img Direction Ref
+GPS.GPS Img Direction
+GPS.GPS Dest Bearing Ref
+GPS.GPS Dest Bearing
+GPS.Unknown tag (0x001f)
+### Apple
+Apple Makernote.*
+### Others
+ICC Profile.*
+Huffman.*
+Photoshop.*
+XMP.*
+JFIF.*
+File Type.Detected MIME Type
+File Type.Detected File Type Name
+File.File Modified Date
+File.File Size
+File.File Name
+File Type.Detected File Type Long Name
+File Type.Expected File Name Extension
+

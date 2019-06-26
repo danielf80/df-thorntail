@@ -2,9 +2,6 @@ package com.df.thorntail;
 
 import java.io.IOException;
 import java.net.URLDecoder;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Optional;
 
 import javax.inject.Inject;

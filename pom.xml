@@ -9,11 +9,13 @@
 	
 	<properties>
 		<version.thorntail>2.4.0.Final</version.thorntail>
+    	<version.mongo>3.10.2</version.mongo>
+    	
 		<maven.compiler.target>1.8</maven.compiler.target>
     	<maven.compiler.source>1.8</maven.compiler.source>
 
     	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>	
+    	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
 	
 	<licenses>
@@ -78,6 +80,11 @@
 		    <groupId>org.imgscalr</groupId>
 		    <artifactId>imgscalr-lib</artifactId>
 		    <version>4.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongodb-driver-sync</artifactId>
+			<version>${version.mongo}</version>
 		</dependency>
 	</dependencies>
 	
