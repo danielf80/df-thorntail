@@ -1,7 +1,9 @@
 package com.df.thorntail;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -14,8 +16,8 @@ import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.df.thorntail.core.InMemoryDb;
-import com.df.thorntail.entity.ImgInfo;
+import com.df.thorntail.db.ImageCollectionDb;
+import com.df.thorntail.db.pojos.ImgInfo;
 
 @Named
 @ConversationScoped
@@ -28,9 +30,7 @@ public class ImageDirectoryBean implements Serializable {
 	private Conversation conversation;
 	
 	@Inject
-	private InMemoryDb db;
-//	@Inject
-//	private FacesContext facesContext;
+	private ImageCollectionDb imgDb;
 	
 	private final int maxImagesPerPage = 15;
 	private List<ImgInfo> images;
@@ -39,7 +39,12 @@ public class ImageDirectoryBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		logger.info("Initializing");
-		images = db.getImages();
+		images = new ArrayList<ImgInfo>();
+		imgDb.getInfoCollection().find().forEach(new Consumer<ImgInfo>() {
+			public void accept(ImgInfo t) {
+				images.add(t);
+			}
+		});
 	}
 	
 	public void initConversation() {
@@ -54,25 +59,7 @@ public class ImageDirectoryBean implements Serializable {
 			conversation.end();
 		}
 	}
-	
-//	public List<String> loadImages() {
-//
-//		logger.info("Loading images");
-//		try (Stream<Path> walk = Files.walk(Paths.get("C:\\Users\\m210752\\Pictures"))){
-//			return walk
-//					.filter(Files::isRegularFile)
-//					.map(Path::toFile)
-//					.map(File::getName)
-//					.filter(ImageDirectoryBean::accept)
-//					.sorted()
-//					.collect(Collectors.toList());
-//		} catch (IOException e) {
-//			logger.error("Error getting images", e);
-//		}
-//		
-//		return Collections.emptyList();
-//	}
-	
+		
 	public List<ImgInfo> images() {
 		return images;
 	}

@@ -12,11 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.df.thorntail.core.InMemoryDb;
-import com.df.thorntail.entity.ImgInfo;
+import com.df.thorntail.db.ImageCollectionDb;
+import com.df.thorntail.db.pojos.ImgSample;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.model.Filters;
 
 
 @WebServlet("/app/image/*")
@@ -27,7 +30,7 @@ public class ImageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	@Inject
-	private InMemoryDb db;
+	private ImageCollectionDb db;
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -46,21 +49,27 @@ public class ImageServlet extends HttpServlet {
         String decodedUrl = URLDecoder.decode(requestedImage, "UTF-8").substring(1);
         
         logger.info("Loading image: {} ({})", requestedImage, decodedUrl);
-        ImgInfo imgInfo = null;
+        ImgSample sample = null;
         try {
-	        final long rqstId = Long.parseLong(decodedUrl);
-	        Optional<ImgInfo> optImage = db.getImages().stream().filter(i -> i.getId() == rqstId).findFirst();
-	        imgInfo = optImage.orElseThrow(IllegalArgumentException::new);
+//	        final long rqstId = Long.parseLong(decodedUrl);
+        	ObjectId ref = new ObjectId(decodedUrl);
+	        FindIterable<ImgSample> results = db.getSampleCollection().find(Filters.eq("infoId", ref));
+	        sample = results.first();
+	        
+	        Optional.of(sample);
+//	        Optional<ImgInfo> optImage = db.getImages().stream().filter(i -> i.getId(). == rqstId).findFirst();
+//	        imgInfo = optImage.orElseThrow(IllegalArgumentException::new);
         } catch (IllegalArgumentException e) {
         	logger.warn("Invalid image request link: {}", decodedUrl, e);
         	response.sendError(HttpServletResponse.SC_NOT_FOUND); // 404.
         	return;
         }
         
-        String filename = imgInfo.getRef();
+//        String filename = imgInfo.getRef();
         
         // Get content type by filename.
-        String contentType = getServletContext().getMimeType(filename);
+        logger.debug("Sample Image Load. Id: {}, Type: {}", sample.getId(), sample.getType());
+        String contentType = getServletContext().getMimeType("x." + sample.getType());
         
         // Check if file is actually an image (avoid download of other files by hackers!).
         // For all content types, see: http://www.w3schools.com/media/media_mimeref.asp
@@ -71,11 +80,11 @@ public class ImageServlet extends HttpServlet {
             return;
         }
         
-        if (imgInfo.getSample() == null || imgInfo.getSample().length == 0) {
+        if (sample.getData() == null || sample.getData().length == 0) {
         	response.sendError(HttpServletResponse.SC_NOT_FOUND); // 404.
         	return;
         }
-        IOUtils.write(imgInfo.getSample(), response.getOutputStream());
+        IOUtils.write(sample.getData(), response.getOutputStream());
         
 //        Path imgPath = Paths.get(filename);
 //        if (imgPath == null) {

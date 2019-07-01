@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.Startup;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Named
+@Startup
 @ApplicationScoped
 public class SysProperties {
 
@@ -60,4 +62,25 @@ public class SysProperties {
 	public int getDefSampleWidth() {
 		return defSampleWidth;
 	}
+	
+	public String getDbUser() {
+		return prop.getProperty("MONGODB_USR", "enel");
+	}
+
+	public String getDbPwd() {
+		return prop.getProperty("MONGODB_PWD", "admin");
+	}
+	
+	public String getDbName() {
+		return prop.getProperty("MONGODB_DBNAME", "test");
+	}
+
+	public String getDbHost() {
+		return prop.getProperty("MONGODB_HOST", "localhost");
+	}
+
+	public int getDbPort() {
+		return Integer.parseInt(prop.getProperty("MONGODB_PORT", "27017"));
+	}
+
 }

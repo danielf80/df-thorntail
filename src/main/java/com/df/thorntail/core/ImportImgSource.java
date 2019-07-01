@@ -17,7 +17,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -85,7 +84,7 @@ public class ImportImgSource {
 		
 		Thread.sleep(5000);
 		while (executor.getActiveCount() > 0) {
-			logger.info("Wating {} tasks ({} completed)", executor.getActiveCount(), executor.getCompletedTaskCount());
+			logger.info("Waiting. {} tasks in execution ({} completed)", executor.getActiveCount(), executor.getCompletedTaskCount());
 			Thread.sleep(5000);	
 		}
 		
@@ -213,10 +212,29 @@ class ImageProcessor implements Callable<String> {
             final int height = SysProperties.getInstance().getDefSampleHeight();
             
             {
-	            BufferedImage sampleImg = Scalr.resize(buffImage, Method.QUALITY, width, height);
-	            if (width < sampleImg.getWidth() || height < sampleImg.getHeight()) {
-	            	sampleImg = Scalr.crop(sampleImg, width, height);
-	            }
+            	float baseScaleWxH = (float)width / (float)height;
+            	float baseScaleHxW = (float)height / (float)width;
+            	
+            	int startWidth = 0;
+            	int startHeight = 0;
+            	int cropWidth = img.getWidth();
+            	int cropHeight = img.getHeight();
+            	if (baseScaleWxH < 1) {
+            		cropHeight = (int)(cropWidth * baseScaleWxH);
+            		startHeight = (img.getHeight() - cropHeight) / 2;
+            	} else {
+            		cropWidth = (int)(cropHeight * baseScaleHxW);
+            		startWidth = (img.getWidth() - cropWidth) / 2;
+            	}
+            	
+            	BufferedImage sampleImg;
+            	BufferedImage cropImg = Scalr.crop(buffImage, startWidth, startHeight, cropWidth, cropHeight);
+            	if (cropImg.getWidth() > width || cropImg.getHeight() > height) {
+            		sampleImg = Scalr.resize(cropImg, Method.QUALITY, width, height);
+            	} else {
+            		sampleImg = cropImg;
+            	}
+	            
 	            ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	            ImageIO.write(sampleImg, sampleType, baos);
 	            ImgSample imgSample = new ImgSample();
