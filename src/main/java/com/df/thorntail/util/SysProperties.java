@@ -24,6 +24,8 @@ public class SysProperties {
 	private String rootFolder;
 	private int defSampleHeight;
 	private int defSampleWidth;
+	private int defPageHeight;
+	private int defPageWidth;
 	
 	@PostConstruct
 	public void init() {
@@ -35,6 +37,8 @@ public class SysProperties {
 			rootFolder = prop.getProperty("ROOT_FOLDER", System.getProperty("java.io.tmpdir"));
 			defSampleHeight = Integer.parseInt(prop.getProperty("DEF_SAMPLE_HEIGHT", "255"));
 			defSampleWidth = Integer.parseInt(prop.getProperty("DEF_SAMPLE_WIDTH", "255"));
+			defPageHeight = Integer.parseInt(prop.getProperty("DEF_PAGE_HEIGHT", "1024"));
+			defPageWidth = Integer.parseInt(prop.getProperty("DEF_PAGE_WIDTH", "768"));
 			logger.info("Root folder: '{}'", rootFolder);
 		} catch (IOException e) {
 			logger.error("Fail to read property file", e);
@@ -61,6 +65,12 @@ public class SysProperties {
 	}
 	public int getDefSampleWidth() {
 		return defSampleWidth;
+	}
+	public int getDefPageHeight() {
+		return defPageHeight;
+	}
+	public int getDefPageWidth() {
+		return defPageWidth;
 	}
 	
 	public String getDbUser() {

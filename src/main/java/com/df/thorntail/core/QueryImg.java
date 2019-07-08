@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.df.thorntail.db.StandaloneDb;
-import com.df.thorntail.db.pojos.ImgInfo;
 import com.df.thorntail.db.pojos.ImgSample;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Filters;

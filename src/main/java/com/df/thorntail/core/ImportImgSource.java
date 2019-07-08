@@ -24,8 +24,6 @@ import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.IOUtils;
-import org.imgscalr.Scalr;
-import org.imgscalr.Scalr.Method;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -119,13 +117,11 @@ class ImageDatabase {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
-	private final StandaloneDb database;
 	private final MongoCollection<ImgInfo> infoCollection;
 	private final MongoCollection<ImgData> dataCollection;
 	private final MongoCollection<ImgSample> sampleCollection;
 	
 	public ImageDatabase(StandaloneDb database) {
-		this.database = database;
 		
 		this.infoCollection = database.getCollection(ImgInfo.class);
 		logger.info("Info Collection: {}", infoCollection);
@@ -164,6 +160,7 @@ class ImageDatabase {
 
 class ImageProcessor implements Callable<String> {
 
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 	private final ImageDatabase db;
 	private final Path imgPath;
 	
@@ -206,46 +203,39 @@ class ImageProcessor implements Callable<String> {
             img.setHeight(buffImage.getHeight());
             img.setWidth(buffImage.getWidth());
             
+            inputStream.reset();
             imgData.setData(IOUtils.toByteArray(inputStream));
             
-            final int width = SysProperties.getInstance().getDefSampleWidth();
-            final int height = SysProperties.getInstance().getDefSampleHeight();
+            SysProperties props = SysProperties.getInstance();
             
-            {
-            	float baseScaleWxH = (float)width / (float)height;
-            	float baseScaleHxW = (float)height / (float)width;
-            	
-            	int startWidth = 0;
-            	int startHeight = 0;
-            	int cropWidth = img.getWidth();
-            	int cropHeight = img.getHeight();
-            	if (baseScaleWxH < 1) {
-            		cropHeight = (int)(cropWidth * baseScaleWxH);
-            		startHeight = (img.getHeight() - cropHeight) / 2;
-            	} else {
-            		cropWidth = (int)(cropHeight * baseScaleHxW);
-            		startWidth = (img.getWidth() - cropWidth) / 2;
-            	}
-            	
-            	BufferedImage sampleImg;
-            	BufferedImage cropImg = Scalr.crop(buffImage, startWidth, startHeight, cropWidth, cropHeight);
-            	if (cropImg.getWidth() > width || cropImg.getHeight() > height) {
-            		sampleImg = Scalr.resize(cropImg, Method.QUALITY, width, height);
-            	} else {
-            		sampleImg = cropImg;
-            	}
-	            
-	            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	            ImageIO.write(sampleImg, sampleType, baos);
-	            ImgSample imgSample = new ImgSample();
-	            imgSample.setData(baos.toByteArray());
-	            imgSample.setScale(Scale.SMALL);
-	            imgSample.setType(sampleType);
-	            ret.samples.add(imgSample);
+            try {
+            	BufferedImage smallImage = ImgShrink.shrink(buffImage, props.getDefSampleWidth(), props.getDefSampleHeight(), true);
+            	ImgSample sample = createSample(smallImage, Scale.SMALL, sampleType);
+            	ret.samples.add(sample);
+            } catch (IOException e) {
+            	logger.error("Error creating sample", e);
+            }
+            
+            try {
+            	BufferedImage pageImage = ImgShrink.shrink(buffImage, props.getDefPageWidth(), props.getDefPageHeight(), false);
+            	ImgSample sample = createSample(pageImage, Scale.REDUCED, sampleType);
+            	ret.samples.add(sample);
+            } catch (IOException e) {
+            	logger.error("Error creating sample", e);
             }
         }
 		
 		return ret;
+	}
+	
+	private ImgSample createSample(BufferedImage buffImage, Scale scale, String imgType) throws IOException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(buffImage, imgType, baos);
+        ImgSample imgSample = new ImgSample();
+        imgSample.setData(baos.toByteArray());
+        imgSample.setScale(Scale.SMALL);
+        imgSample.setType(imgType);
+        return imgSample;
 	}
 	
 	private String saveImage(ImageData ret) {
