@@ -11,10 +11,13 @@
     <h:outputStylesheet library="css" name="Dark.css" />
     <h:outputStylesheet library="css" name="Main.css" />
     <title>Thorntail Facelet</title>
+    <div id="header">
+    	<ui:insert name="header"></ui:insert>
+    </div>
 </h:head>
 
 <h:body>
-
+	<body>
     <div id="top">
         <ui:insert name="top"><h1>Thorntail Facelet</h1></ui:insert>
         <br/>
@@ -28,7 +31,7 @@
     <div id="bottom">
         <ui:insert name="bottom">Powered by Thorntail</ui:insert>
     </div>
-
+	</body>
 </h:body>
 
 </html>

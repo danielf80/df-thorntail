@@ -6,12 +6,68 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html">
 
 <f:event listener="#{imageDirectoryBean.initConversation}" type="preRenderView"></f:event>
-  
-<body>
 
 <ui:composition template="/template.xhtml">
 
+	<ui:define name="header">
+		<h:outputScript library="js" name="jquery-3.3.1.min.js"></h:outputScript>
+		
+		<style>
+		.thumb { 
+			float: left;
+			width: 260px;
+			height: 260px;
+			background-size: cover;
+			margin: 1px;
+		}
+		</style>
+	
+		<script type='text/javascript'>
+		var imgListUrl = "#{request.contextPath}/app/list";
+		
+		function loadImgList() {
+			$.ajax({
+				type: "GET",
+				url: imgListUrl,
+				data: { id: 12345, cid: 'ABCDEF123456' },
+				dataType: "json",
+				success: function(response, status) {
+					console.log("Response: " + response);
+					console.log("Status: " + status);
+					},
+				error: function(response, status) {
+					console.log("Response: " + response);
+					console.log("Status: " + status);
+					}					
+			});
+		}
+
+		function addThumb(imgIds) {
+			var scrollDiv = $('#ScrollDiv').detach();
+			var containerDiv = document.getElementById("ThumbContainer");
+			var lastThumbDiv = containerDiv.lastChild;
+
+			for (c = 0; c < quantity; c++, index++) {
+				var newThumbDiv = document.createElement("div");
+				newThumbDiv.id = "img" + index;
+				newThumbDiv.className = "thumb";
+				newThumbDiv.innerHTML += "<span>img " + index + "</span>";
+				newThumbDiv.setAttribute('data-img', index);
+				insertAfter(lastThumbDiv, newThumbDiv);
+				lastThumbDiv = newThumbDiv;
+			}
+
+			scrollDiv.appendTo('#ThumbContainer');
+			scrollDiv.attr("data-index", index);
+		}
+		</script>
+	</ui:define>
+	
     <ui:define name="content">
+    	<script type='text/javascript'>
+    		console.log("Loading image list");
+    		loadImgList();
+    	</script>
         <div id="mainPanel">
         	<table style="width: 100%;">
         		<tr>
@@ -21,12 +77,8 @@
         				</div>
         			</td>
         			<td>
-        				<div id="gallery" style="width: 100%">
-        					<ui:repeat value="#{imageDirectoryBean.imagesInPage(0)}" var="image">
-					        	<div class="imgPanel">
-					        		<h:graphicImage value="image/#{image.id}" style="width: 255px;"/>
-					        	</div>
-					        </ui:repeat>
+        				<div id="ThumbContainer" style="width: 100%">
+        					<div id="ScrollDiv" class="thumb" style="text-align: center;"></div>
         				</div>
         			</td>
         		</tr>
@@ -35,6 +87,4 @@
     </ui:define>
 
 </ui:composition>
-
-</body>
 </html>

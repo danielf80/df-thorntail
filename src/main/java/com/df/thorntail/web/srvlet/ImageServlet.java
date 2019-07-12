@@ -1,4 +1,4 @@
-package com.df.thorntail;
+package com.df.thorntail.web.srvlet;
 
 import java.io.IOException;
 import java.net.URLDecoder;
